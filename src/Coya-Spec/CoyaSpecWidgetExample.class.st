@@ -14,6 +14,12 @@ CoyaSpecWidgetExample class >> defaultSpec [
 	^ SpBoxLayout newTopToBottom add: #text
 ]
 
+{ #category : #specs }
+CoyaSpecWidgetExample class >> exmple [
+	<example> 
+	^ self new openWithSpec. 
+]
+
 { #category : #initialization }
 CoyaSpecWidgetExample >> initializePresenters [
 
@@ -26,9 +32,7 @@ CoyaSpecWidgetExample >> initializePresenters [
 CoyaSpecWidgetExample >> initializeTopics [
 
 	super initializeTopics.
-	((self coya findOrCreateTopic: #bus) subscriptionFor: self)
-		onReadSend: (Message selector: #updateBus:) to: self;
-		type: String
+	self subscribe: #bus activating: #updateBus:
 ]
 
 { #category : #initialization }

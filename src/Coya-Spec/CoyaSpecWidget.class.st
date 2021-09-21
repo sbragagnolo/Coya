@@ -17,6 +17,16 @@ CoyaSpecWidget >> coya [
 ]
 
 { #category : #'as yet unclassified' }
+CoyaSpecWidget >> displayStringOn: aStream [
+
+	aStream
+		nextPutAll: self class name;
+		nextPutAll: '(';
+		nextPutAll: self class title;
+		nextPutAll: ')'
+]
+
+{ #category : #'as yet unclassified' }
 CoyaSpecWidget >> initializePrivateHooks [
 
 	super initializePrivateHooks.
@@ -31,6 +41,14 @@ CoyaSpecWidget >> initializeTopics [
 { #category : #'as yet unclassified' }
 CoyaSpecWidget >> initializeWindow: aWindow [
 	aWindow whenClosedDo: [ self unsubscribeAll ]
+]
+
+{ #category : #'as yet unclassified' }
+CoyaSpecWidget >> subscribe: aTopicName activating: aSelector [
+
+	(self coya subscriptionOn: aTopicName for: self)
+		onReadSend: (Message selector: aSelector) to: self;
+		yourself
 ]
 
 { #category : #'as yet unclassified' }

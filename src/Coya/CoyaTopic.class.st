@@ -73,6 +73,16 @@ CoyaTopic >> publisher: anOwner publishes: aContent [
 		thenDo: [ :s | s receive: aContent ]
 ]
 
+{ #category : #accessing }
+CoyaTopic >> publishers [
+	^ publishers
+]
+
+{ #category : #accessing }
+CoyaTopic >> subscribers [
+	^ subscribers
+]
+
 { #category : #'as yet unclassified' }
 CoyaTopic >> subscriptionFor: anOwner [
 
