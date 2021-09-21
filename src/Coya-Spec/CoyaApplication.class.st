@@ -1,3 +1,6 @@
+"
+I am an application that holds a coya instance. 
+"
 Class {
 	#name : #CoyaApplication,
 	#superclass : #SpApplication,

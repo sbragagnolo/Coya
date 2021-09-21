@@ -1,3 +1,9 @@
+"
+I am a widget that understands coya methods, allowing the function of the CoyaPubSlot. I do give also access to the hook
+initializeTopics 
+and some convenience method. 
+I ensure the un-registration of all the subcribers / pbulishers
+"
 Class {
 	#name : #CoyaSpecWidget,
 	#superclass : #SpPresenter,

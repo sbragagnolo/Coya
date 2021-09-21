@@ -1,3 +1,6 @@
+"
+I am a silly and barely useful viewer of a a coya instance configuration 
+"
 Class {
 	#name : #CoyaViewer,
 	#superclass : #SpPresenter,
