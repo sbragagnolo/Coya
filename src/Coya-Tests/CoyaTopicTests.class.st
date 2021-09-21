@@ -190,6 +190,24 @@ CoyaTopicTests >> testStringTypedSubscriberReceivesOnlyStringMessages [
 ]
 
 { #category : #tests }
+CoyaTopicTests >> testSubscriberManagesErrorWithHook [
+
+	| pub sub variable text causedBy |
+	pub := (coya findOrCreateTopic: #example) publicationFor: self.
+	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
+		       type: String;
+		       onErrorHook: [ :e :b | 
+			       text := e messageText.
+			       causedBy := b ];
+		       onReadSend: (Message selector: #value:)
+		       to: [ :a :b | 1 / 0 ].
+	pub publish: #hello.
+	self assert: variable isNil.
+	self assert: text isNotNil.
+	self assert: causedBy equals: #hello
+]
+
+{ #category : #tests }
 CoyaTopicTests >> testTopicAsyncSubscringProducesAnAsyncSubcripion [
 
 	| sub |

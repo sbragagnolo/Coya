@@ -79,7 +79,6 @@ CoyaTopic >> subscriptionFor: anOwner [
 			         topic: self;
 			         owner: anOwner.
 		  subscribers add: sub.
-		  self welcomeSubscriber: sub.
 		  sub ]
 ]
 

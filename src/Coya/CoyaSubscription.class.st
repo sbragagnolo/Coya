@@ -33,7 +33,8 @@ CoyaSubscription >> onErrorHook: aValuable [
 
 { #category : #'as yet unclassified' }
 CoyaSubscription >> onReadSend: aMessageSend [ 
-	onReadSend := aMessageSend 
+	onReadSend := aMessageSend .
+	topic welcomeSubscriber: self .
 ]
 
 { #category : #'as yet unclassified' }
