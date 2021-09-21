@@ -51,6 +51,12 @@ Coya >> publicationOn: aTopicName for: anOwner [
 ]
 
 { #category : #'Convenience API' }
+Coya >> subscriptionOn: aTopicName for: anOwner [
+
+	^ (self findOrCreateTopic: aTopicName) subscriptionFor: anOwner
+]
+
+{ #category : #'Convenience API' }
 Coya >> subscriptionOn: aTopicName for: anOwner onRead: anOnRead onError: anOnError [
 
 	^ ((self findOrCreateTopic: aTopicName) subscriptionFor: anOwner)
