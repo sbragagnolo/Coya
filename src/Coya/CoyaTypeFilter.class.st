@@ -1,3 +1,6 @@
+"
+This hierarchy defines what messages to receive and not 
+"
 Class {
 	#name : #CoyaTypeFilter,
 	#superclass : #Object,

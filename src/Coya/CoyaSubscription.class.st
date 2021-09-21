@@ -77,3 +77,11 @@ CoyaSubscription >> typeConstraint: aFullBlockClosure [
 CoyaSubscription >> typeFilter [
 	^ typeFilter
 ]
+
+{ #category : #accessing }
+CoyaSubscription >> unsubscribe [
+
+	topic unsubscribe: self.
+	topic := nil.
+	typeFilter := nil
+]

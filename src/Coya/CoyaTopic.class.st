@@ -1,3 +1,6 @@
+"
+I am a topic. I represent a subject of conversation. I deal inside with publishers and subscribers 
+"
 Class {
 	#name : #CoyaTopic,
 	#superclass : #Object,
@@ -80,6 +83,18 @@ CoyaTopic >> subscriptionFor: anOwner [
 			         owner: anOwner.
 		  subscribers add: sub.
 		  sub ]
+]
+
+{ #category : #'as yet unclassified' }
+CoyaTopic >> unregister: aPublication [
+
+	^ publishers remove: aPublication
+]
+
+{ #category : #'as yet unclassified' }
+CoyaTopic >> unsubscribe: aSubscription [
+
+	^ subscribers remove: aSubscription
 ]
 
 { #category : #'as yet unclassified' }

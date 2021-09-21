@@ -17,3 +17,9 @@ CoyaPublication >> publish: aContent [
 
 	topic publisher: owner publishes: aContent
 ]
+
+{ #category : #'as yet unclassified' }
+CoyaPublication >> unregister [
+	topic unregister: self.
+	topic := nil. 
+]

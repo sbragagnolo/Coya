@@ -10,7 +10,7 @@ Class {
 	#category : #Coya
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'Low API' }
 Coya >> findOrCreateTopic: aString [
 
 	^ self findTopic: aString ifNone: [ 
@@ -21,7 +21,7 @@ Coya >> findOrCreateTopic: aString [
 		  t ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'Low API' }
 Coya >> findTopic: aString [
 
 	^ self
@@ -29,7 +29,7 @@ Coya >> findTopic: aString [
 		  ifNone: [ NotFound signal: aString , ' is not a valid topic ' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'Low API' }
 Coya >> findTopic: aString ifNone: aFullBlockClosure [
 
 	^ topics
@@ -37,14 +37,29 @@ Coya >> findTopic: aString ifNone: aFullBlockClosure [
 		  ifNone: [ aFullBlockClosure value ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 Coya >> initialize [
 
 	super initialize.
 	topics := Set new
 ]
 
-{ #category : #accessing }
-Coya >> topics [
-	^ topics
+{ #category : #'Convenience API' }
+Coya >> publicationOn: aTopicName for: anOwner [
+
+	^ (self findOrCreateTopic: aTopicName) publicationFor: anOwner
+]
+
+{ #category : #'Convenience API' }
+Coya >> subscriptionOn: aTopicName for: anOwner onRead: anOnRead onError: anOnError [
+
+	^ ((self findOrCreateTopic: aTopicName) subscriptionFor: anOwner)
+		  onErrorHook: anOnError;
+		  onReadSend: anOnRead;
+		  yourself
+]
+
+{ #category : #'Low API' }
+Coya >> topics [ 
+	^ topics 
 ]
