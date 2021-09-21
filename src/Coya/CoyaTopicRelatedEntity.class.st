@@ -1,3 +1,6 @@
+"
+Here only to put together the problematic of the publication and subcription togetehr. 
+"
 Class {
 	#name : #CoyaTopicRelatedEntity,
 	#superclass : #Object,

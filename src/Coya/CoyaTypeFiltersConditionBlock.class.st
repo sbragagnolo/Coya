@@ -1,3 +1,7 @@
+"
+I store a block given by the user allowing arbitrary conditions. 
+I only accept clean blocks.
+"
 Class {
 	#name : #CoyaTypeFiltersConditionBlock,
 	#superclass : #CoyaTypeFilter,

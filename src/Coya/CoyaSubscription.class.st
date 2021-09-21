@@ -1,10 +1,13 @@
+"
+I represent a subscription. I am a reading end of a topic. Belong to one speficic owner 
+"
 Class {
 	#name : #CoyaSubscription,
 	#superclass : #CoyaTopicRelatedEntity,
 	#instVars : [
-		'onReadHook',
 		'typeFilter',
-		'onErrorHook'
+		'onErrorHook',
+		'onReadSend'
 	],
 	#category : #Coya
 }
@@ -22,9 +25,15 @@ CoyaSubscription >> isSubscription [
 	^ true
 ]
 
+{ #category : #accessing }
+CoyaSubscription >> onErrorHook: aValuable [
+
+	onErrorHook := aValuable
+]
+
 { #category : #'as yet unclassified' }
 CoyaSubscription >> onReadSend: aMessageSend [ 
-	onReadHook := aMessageSend 
+	onReadSend := aMessageSend 
 ]
 
 { #category : #'as yet unclassified' }
@@ -36,14 +45,15 @@ CoyaSubscription >> onReadSend: aMessage to: anObject [
 { #category : #accessing }
 CoyaSubscription >> receive: anObject [
 
-	[ onReadHook cull: anObject ]
+	[ onReadSend  cull: anObject ]
 		on: Error
 		do: [ :e | onErrorHook cull: e cull: anObject ]
 ]
 
 { #category : #asserting }
-CoyaSubscription >> shouldReceive: aMessage [
+CoyaSubscription >> shouldReceive: aMessage from: anOwner [
 
+	owner = anOwner ifTrue: [ ^ false ].
 	^ typeFilter filter: aMessage
 ]
 

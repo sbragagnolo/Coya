@@ -1,3 +1,6 @@
+"
+I am an entry point to Coya. 
+"
 Class {
 	#name : #Coya,
 	#superclass : #Object,

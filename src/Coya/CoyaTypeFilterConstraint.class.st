@@ -1,3 +1,6 @@
+"
+I allow to duck-type by registering constraints such as ""shouldUnderstand"" 
+"
 Class {
 	#name : #CoyaTypeFilterConstraint,
 	#superclass : #CoyaTypeFilter,

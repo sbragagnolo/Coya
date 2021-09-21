@@ -6,7 +6,8 @@ Class {
 		'latching',
 		'publishers',
 		'subscribers',
-		'lastMessage'
+		'lastMessage',
+		'lastPublisher'
 	],
 	#category : #Coya
 }
@@ -60,10 +61,12 @@ CoyaTopic >> publicationFor: anOwner [
 { #category : #'as yet unclassified' }
 CoyaTopic >> publisher: anOwner publishes: aContent [
 
-	self latching ifTrue: [ lastMessage := aContent ].
+	self latching ifTrue: [ 
+		lastMessage := aContent.
+		lastPublisher := anOwner ].
 
 	subscribers
-		select: [ :s | s shouldReceive: aContent ]
+		select: [ :s | s shouldReceive: aContent from: anOwner ]
 		thenDo: [ :s | s receive: aContent ]
 ]
 
@@ -71,9 +74,18 @@ CoyaTopic >> publisher: anOwner publishes: aContent [
 CoyaTopic >> subscriptionFor: anOwner [
 
 	^ subscribers detect: [ :p | p owner = anOwner ] ifNone: [ 
-		  | pub |
-		  pub := CoyaSubscription new
+		  | sub |
+		  sub := CoyaSubscription new
 			         topic: self;
 			         owner: anOwner.
-		  subscribers add: pub ]
+		  subscribers add: sub.
+		  self welcomeSubscriber: sub.
+		  sub ]
+]
+
+{ #category : #'as yet unclassified' }
+CoyaTopic >> welcomeSubscriber: sub [
+	(latching and: [ lastPublisher isNotNil ]) ifTrue: [ 
+		(sub shouldReceive: lastMessage from: lastPublisher) ifTrue: [ 
+			sub receive: lastMessage ] ]
 ]
