@@ -63,3 +63,9 @@ Coya >> subscriptionOn: aTopicName for: anOwner onRead: anOnRead onError: anOnEr
 Coya >> topics [ 
 	^ topics 
 ]
+
+{ #category : #'Low API' }
+Coya >> unregisterOwner: anObject [
+
+	topics do: [ :t | t unregisterOwner: anObject ]
+]

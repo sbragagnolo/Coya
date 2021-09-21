@@ -92,6 +92,15 @@ CoyaTopic >> unregister: aPublication [
 ]
 
 { #category : #'as yet unclassified' }
+CoyaTopic >> unregisterOwner: anOwner [
+
+	(publishers select: [ :p | p owner = anOwner ]) do: [ :p | 
+		p unregister ].
+	(subscribers select: [ :s | s owner = anOwner ]) do: [ :s | 
+		s unsubscribe ]
+]
+
+{ #category : #'as yet unclassified' }
 CoyaTopic >> unsubscribe: aSubscription [
 
 	^ subscribers remove: aSubscription
