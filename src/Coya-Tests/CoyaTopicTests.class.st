@@ -156,6 +156,42 @@ CoyaTopicTests >> testPublisherProducesPublication [
 ]
 
 { #category : #tests }
+CoyaTopicTests >> testStringTypedSubscriberPublishProducesErrorAfterUnregister [
+
+	| pub sub variable |
+	pub := (coya findOrCreateTopic: #example) publicationFor: self.
+	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
+		       type: String;
+		       onReadSend: (Message selector: #value:)
+		       to: [ :a | variable := a ].
+	pub publish: #hello.
+	self assert: variable equals: #hello.
+	pub publish: #hello2.
+	self assert: variable equals: #hello2.
+
+	pub unregister.
+	self should: [ pub publish: #hello ] raise: Error
+]
+
+{ #category : #tests }
+CoyaTopicTests >> testStringTypedSubscriberReceivesNoneAfterUnsubscribe [
+
+	| pub sub variable |
+	pub := (coya findOrCreateTopic: #example) publicationFor: self.
+	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
+		       type: String;
+		       onReadSend: (Message selector: #value:)
+		       to: [ :a | variable := a ].
+	pub publish: #hello.
+	self assert: variable equals: #hello.
+	pub publish: #hello2.
+	self assert: variable equals: #hello2.
+	sub unsubscribe.
+	pub publish: #hello.
+	self assert: variable equals: #hello2
+]
+
+{ #category : #tests }
 CoyaTopicTests >> testStringTypedSubscriberReceivesNoneFromHimself [
 
 	| pub sub variable |
