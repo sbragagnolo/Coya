@@ -2,8 +2,8 @@ Class {
 	#name : #CoyaSpecWidgetExample,
 	#superclass : #CoyaSpecWidget,
 	#instVars : [
-		'#value => CoyaPublishSlot topic: #bus',
-		'#text'
+		'#text',
+		'#value => CoyaPublishSlot topic: #bus'
 	],
 	#category : #'Coya-Spec'
 }

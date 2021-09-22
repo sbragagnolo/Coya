@@ -10,7 +10,7 @@ CoyaPublishSlot >> initialize: instance [
 	| t pub |
 	super initialize: instance.
 	t := instance coya findOrCreateTopic: topic.
-	pub := CoyaPublication new owner: self.
+	pub := CoyaPublication new owner: instance.
 	pub topic: t.
 	super
 		write: { 

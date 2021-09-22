@@ -23,16 +23,22 @@ CoyaSlot >> emitStore: aMethodBuilder [
 ]
 
 { #category : #writing }
+CoyaSlot >> initialize: instance [
+	baseSlot initialize: instance
+
+]
+
+{ #category : #writing }
 CoyaSlot >> printOn: aStream [
-	aStream 
+
+	aStream
 		store: self name;
 		nextPutAll: ' => ';
 		nextPutAll: self class name.
-	
+
 	aStream
 		nextPutAll: ' topic: #';
-		nextPutAll: topic asSymbol
-
+		nextPutAll: (topic ifNil: [ #nil ] ifNotNil: [ :t | t asSymbol ])
 ]
 
 { #category : #writing }

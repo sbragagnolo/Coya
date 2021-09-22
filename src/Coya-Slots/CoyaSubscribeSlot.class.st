@@ -13,7 +13,7 @@ CoyaSubscribeSlot >> initialize: instance [
 	| t sub |
 	super initialize: instance.
 	t := instance coya findOrCreateTopic: topic.
-	sub := CoyaSyncSubscription new owner: self.
+	sub := CoyaSyncSubscription new owner: instance.
 	type ifNotNil: [ sub type: (self class environment at: type) ].
 	sub topic: t.
 	super write: sub to: instance
@@ -21,6 +21,7 @@ CoyaSubscribeSlot >> initialize: instance [
 
 { #category : #'meta-object-protocol' }
 CoyaSubscribeSlot >> printOn: aStream [
+	type ifNil: [ ^ super printOn: aStream ].
 	aStream 
 		store: self name;
 		nextPutAll: ' => ';

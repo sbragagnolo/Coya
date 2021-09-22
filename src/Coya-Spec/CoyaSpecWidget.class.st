@@ -7,6 +7,9 @@ I ensure the un-registration of all the subcribers / pbulishers
 Class {
 	#name : #CoyaSpecWidget,
 	#superclass : #SpPresenter,
+	#instVars : [
+		'subs'
+	],
 	#category : #'Coya-Spec'
 }
 
@@ -33,6 +36,13 @@ CoyaSpecWidget >> displayStringOn: aStream [
 ]
 
 { #category : #'as yet unclassified' }
+CoyaSpecWidget >> initialize [
+
+	subs := OrderedCollection new.
+	super initialize
+]
+
+{ #category : #'as yet unclassified' }
 CoyaSpecWidget >> initializePrivateHooks [
 
 	super initializePrivateHooks.
@@ -52,9 +62,13 @@ CoyaSpecWidget >> initializeWindow: aWindow [
 { #category : #'as yet unclassified' }
 CoyaSpecWidget >> subscribe: aTopicName activating: aSelector [
 
-	(self coya subscriptionOn: aTopicName for: self)
-		onReadSend: (Message selector: aSelector) to: self;
-		yourself
+	| t |
+	t := self coya findOrCreateTopic: aTopicName.
+	subs add: (CoyaAsyncSubscription new
+			 owner: self;
+			 onReadSend: (Message selector: aSelector) to: self;
+			 topic: t;
+			 yourself)
 ]
 
 { #category : #'as yet unclassified' }
