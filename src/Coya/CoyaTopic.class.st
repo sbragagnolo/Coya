@@ -15,17 +15,17 @@ Class {
 	#category : #Coya
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #configuration }
 CoyaTopic >> beLatching [
 	latching := true. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #configuration }
 CoyaTopic >> beNotLatching [
 	latching := false. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 CoyaTopic >> initialize [
 
 	super initialize.
@@ -34,7 +34,41 @@ CoyaTopic >> initialize [
 	subscribers := WeakOrderedCollection new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #install }
+CoyaTopic >> installPublisher: aPublisher [
+
+	^ self publishers
+		  detect: [ :p | p owner = aPublisher owner ]
+		  ifFound: [ :a | 
+		  self error: 'Publisher is already installed for this owner' ]
+		  ifNone: [ 
+			  self publishers add: aPublisher.
+			  aPublisher installedInto: self ]
+]
+
+{ #category : #install }
+CoyaTopic >> installSubscription: aSubscription [
+
+	^ self subscribers
+		  detect: [ :p | p owner = aSubscription owner ]
+		  ifFound: [ :a | 
+		  self error: 'Subscription is already installed for this owner' ]
+		  ifNone: [ 
+			  self subscribers add: aSubscription.
+			  aSubscription installedInto: self ]
+]
+
+{ #category : #accessing }
+CoyaTopic >> lastMessage [
+	^ lastMessage
+]
+
+{ #category : #accessing }
+CoyaTopic >> lastPublisher [
+	^ lastPublisher
+]
+
+{ #category : #accessing }
 CoyaTopic >> latching [
 
 	^ latching
@@ -50,18 +84,15 @@ CoyaTopic >> name: aString [
 	name := aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CoyaTopic >> publicationFor: anOwner [
 
-	^self publishers detect: [ :p | p owner = anOwner ] ifNone: [ 
-		  | pub |
-		  pub := CoyaPublication new
-			         topic: self;
-			         owner: anOwner.
-		  self publishers add: pub ]
+	^ self publishers
+		  detect: [ :p | p owner = anOwner ]
+		  ifNone: [ self error: 'NonPublisher' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #publishing }
 CoyaTopic >> publisher: anOwner publishes: aContent [
 
 	self latching ifTrue: [ 
@@ -85,25 +116,21 @@ CoyaTopic >> subscribers [
 	^ subscribers := subscribers reject: [ :p | p isNil ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CoyaTopic >> subscriptionFor: anOwner [
 
-	^ self subscribers detect: [ :p | p owner = anOwner ] ifNone: [ 
-		  | sub |
-		  sub := CoyaSubscription new
-			         topic: self;
-			         owner: anOwner.
-		  self subscribers add: sub.
-		  sub ]
+	^ self subscribers
+		  detect: [ :p | p owner = anOwner ]
+		  ifNone: [ self error: 'Non subscription found' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #register }
 CoyaTopic >> unregister: aPublication [
 
 	^ self publishers remove: aPublication ifAbsent: [  ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #register }
 CoyaTopic >> unregisterOwner: anOwner [
 
 	(self publishers select: [ :p | p owner = anOwner ]) do: [ :p | 
@@ -112,15 +139,8 @@ CoyaTopic >> unregisterOwner: anOwner [
 		s unsubscribe ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #register }
 CoyaTopic >> unsubscribe: aSubscription [
 
 	^ self subscribers remove: aSubscription
-]
-
-{ #category : #'as yet unclassified' }
-CoyaTopic >> welcomeSubscriber: sub [
-	(latching and: [ lastPublisher isNotNil ]) ifTrue: [ 
-		(sub shouldReceive: lastMessage from: lastPublisher) ifTrue: [ 
-			sub receive: lastMessage ] ]
 ]

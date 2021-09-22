@@ -11,6 +11,16 @@ Class {
 	#category : #Coya
 }
 
+{ #category : #accessing }
+CoyaTopicRelatedEntity >> installedInto: aTopic [
+
+	topic ifNotNil: [ 
+		topic = aTopic ifFalse: [ 
+			^ self error:
+				  'The Subcription / Publication has been already installed into an other topic ' ] ].
+	topic := aTopic
+]
+
 { #category : #testing }
 CoyaTopicRelatedEntity >> isPublication [
 	^ false
@@ -37,6 +47,6 @@ CoyaTopicRelatedEntity >> topic [
 ]
 
 { #category : #accessing }
-CoyaTopicRelatedEntity >> topic: aCoyaTopic [ 
-	topic := aCoyaTopic
+CoyaTopicRelatedEntity >> topic: aTopic [
+	self subclassResponsibility 
 ]

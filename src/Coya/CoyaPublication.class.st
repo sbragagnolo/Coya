@@ -19,6 +19,12 @@ CoyaPublication >> publish: aContent [
 ]
 
 { #category : #'as yet unclassified' }
+CoyaPublication >> topic: aTopic [
+
+	aTopic installPublisher: self
+]
+
+{ #category : #'as yet unclassified' }
 CoyaPublication >> unregister [
 	topic unregister: self.
 	topic := nil. 

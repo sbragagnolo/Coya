@@ -7,12 +7,21 @@ Class {
 { #category : #tests }
 CoyaTopicTests >> testConstraintedByCommaMessageShouldReceiveNoneMessageFromHimself [
 
-	| pub sub variable ref |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: self)
+	| topic pub sub variable ref |
+
+	topic := coya findOrCreateTopic: #example.
+
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+	sub := CoyaAsyncSubscription new
+				 owner: self ;
 		       typeConstraint: [ :tc | tc shouldUnderstand: #, ];
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
+
+
 	pub publish: #hello.
 	self assert: variable equals: nil.
 	pub publish: nil.
@@ -26,12 +35,20 @@ CoyaTopicTests >> testConstraintedByCommaMessageShouldReceiveNoneMessageFromHims
 { #category : #tests }
 CoyaTopicTests >> testConstraintedByCommaMessageTypedSubscriberReceivesOnlyThoseMessages [
 
-	| pub sub variable ref |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
+		| topic pub sub variable ref |
+
+	topic := coya findOrCreateTopic: #example.
+
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+	sub := CoyaAsyncSubscription new
+				 owner: 1 ;
 		       typeConstraint: [ :tc | tc shouldUnderstand: #, ];
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
+
 	pub publish: #hello.
 	self assert: variable equals: #hello.
 	pub publish: nil.
@@ -78,15 +95,25 @@ CoyaTopicTests >> testFindTopicIfNoneBlock [
 { #category : #tests }
 CoyaTopicTests >> testLatchingTopicInformsLastValueToSubcriberOnSubscription [
 
-	| pub sub variable |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
+	| pub sub variable topic|
+	
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+	sub := CoyaAsyncSubscription new
+				 owner: 1 ;
+		       typeConstraint: [ :tc | tc shouldUnderstand: #, ];
+		       onReadSend: (Message selector: #value:)
+		       to: [ :a | variable := a ].
+
+	
+	
 
 	pub publish: #hello.
 	self assert: variable equals: nil.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
-		       type: String;
-		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+
+	sub topic: topic. 
 	self assert: variable equals: #hello
 ]
 
@@ -99,23 +126,41 @@ CoyaTopicTests >> testNonTopicExistsByDefault [
 { #category : #tests }
 CoyaTopicTests >> testNullTypedSubscriberReceivesAllMessages [
 
-	| pub sub variable |
-	pub := ((coya findOrCreateTopic: #example) publicationFor: self).
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
+	| pub sub variable topic |
+	
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+		
+	sub := CoyaAsyncSubscription new
+		       owner: 1;
+		       typeConstraint: [ :tc | tc shouldUnderstand: #, ];
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
+		
 	pub publish: #hello.
-	self assert: variable equals:#hello
+	self assert: variable equals: #hello
 ]
 
 { #category : #tests }
 CoyaTopicTests >> testNullTypedSubscriberReceivesNoneMessageFromHimself [
 
-	| pub sub variable |
-	pub := ((coya findOrCreateTopic: #example) publicationFor: self).
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: self)
+		| pub sub variable topic |
+	
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+		
+	sub := CoyaAsyncSubscription new
+		       owner: self ;
+		       typeConstraint: [ :tc | tc shouldUnderstand: #, ];
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
+		
 	pub publish: #hello.
 	self assert: variable equals: nil
 ]
@@ -123,47 +168,60 @@ CoyaTopicTests >> testNullTypedSubscriberReceivesNoneMessageFromHimself [
 { #category : #tests }
 CoyaTopicTests >> testObjectTypedSubscriberReceivesAllMessages [
 
-	| pub sub variable |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
-		       type: Object;
+	| pub sub variable topic |
+	
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+		
+	sub := CoyaAsyncSubscription new
+		       owner: 1;
+		       type: Object ;
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
+		
 	pub publish: #hello.
 	self assert: variable equals: #hello
 ]
 
 { #category : #tests }
 CoyaTopicTests >> testObjectTypedSubscriberReceivesNoneFromHimself [
-	| pub sub variable |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: self)
+
+	| pub sub variable topic |
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+
+	sub := CoyaAsyncSubscription new
+		       owner: self;
 		       type: Object;
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
 	pub publish: #hello.
-	self assert: variable equals:nil
-]
-
-{ #category : #tests }
-CoyaTopicTests >> testPublisherProducesPublication [
-
-	| pub |
-	pub := ((coya findOrCreateTopic: #example) publicationFor: self).
-
-	self assert: pub class equals: CoyaPublication. 
-	self assert: pub topic equals: (coya findOrCreateTopic: #example).
+	self assert: variable equals: nil
 ]
 
 { #category : #tests }
 CoyaTopicTests >> testStringTypedSubscriberPublishProducesErrorAfterUnregister [
 
-	| pub sub variable |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
-		       type: String;
+
+	| pub sub variable topic |
+	
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+		
+	sub := CoyaAsyncSubscription new
+		       owner: 1;
+		       type: String ;
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
 	pub publish: #hello.
 	self assert: variable equals: #hello.
 	pub publish: #hello2.
@@ -176,12 +234,18 @@ CoyaTopicTests >> testStringTypedSubscriberPublishProducesErrorAfterUnregister [
 { #category : #tests }
 CoyaTopicTests >> testStringTypedSubscriberReceivesNoneAfterUnsubscribe [
 
-	| pub sub variable |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
+	| pub sub variable topic |
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+
+	sub := CoyaAsyncSubscription new
+		       owner: 1;
 		       type: String;
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
 	pub publish: #hello.
 	self assert: variable equals: #hello.
 	pub publish: #hello2.
@@ -194,12 +258,18 @@ CoyaTopicTests >> testStringTypedSubscriberReceivesNoneAfterUnsubscribe [
 { #category : #tests }
 CoyaTopicTests >> testStringTypedSubscriberReceivesNoneFromHimself [
 
-	| pub sub variable |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: self)
+	| pub sub variable topic |
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+
+	sub := CoyaAsyncSubscription new
+		       owner: self;
 		       type: String;
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
 	pub publish: #hello.
 	self assert: variable equals: nil.
 	pub publish: 1.
@@ -211,12 +281,18 @@ CoyaTopicTests >> testStringTypedSubscriberReceivesNoneFromHimself [
 { #category : #tests }
 CoyaTopicTests >> testStringTypedSubscriberReceivesOnlyStringMessages [
 
-	| pub sub variable |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
+	| pub sub variable topic |
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+
+	sub := CoyaAsyncSubscription new
+		       owner: 1;
 		       type: String;
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a | variable := a ].
+		       to: [ :a | variable := a ];
+		       topic: topic.
 	pub publish: #hello.
 	self assert: variable equals: #hello.
 	pub publish: 1.
@@ -228,17 +304,24 @@ CoyaTopicTests >> testStringTypedSubscriberReceivesOnlyStringMessages [
 { #category : #tests }
 CoyaTopicTests >> testSubscriberManagesErrorWithHook [
 
-	| pub sub variable text causedBy |
-	pub := (coya findOrCreateTopic: #example) publicationFor: self.
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: 1)
+	| pub sub text causedBy topic |
+	topic := coya findOrCreateTopic: #example.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+
+	sub := CoyaAsyncSubscription new
+		       owner: 1;
 		       type: String;
 		       onErrorHook: [ :e :b | 
 			       text := e messageText.
 			       causedBy := b ];
 		       onReadSend: (Message selector: #value:)
-		       to: [ :a :b | 1 / 0 ].
+		       to: [ :a :b | 1 / 0 ];
+		       topic: topic.
+
+
 	pub publish: #hello.
-	self assert: variable isNil.
 	self assert: text isNotNil.
 	self assert: causedBy equals: #hello
 ]
@@ -247,28 +330,65 @@ CoyaTopicTests >> testSubscriberManagesErrorWithHook [
 CoyaTopicTests >> testTopicAsyncSubscringProducesAnAsyncSubcripion [
 
 	| sub |
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: self)
-		     onReadSend: (Message selector: #lala:)
-		     to: self.
+	sub := CoyaAsyncSubscription new
+		       owner: self ;
+		       onReadSend: (Message selector: #value:) to: [ :a :b |  ];
+		       yourself.
 
-	self assert: sub isSubscription. 
+	self assert: sub isSubscription.
 	self assert: sub owner equals: self.
-	self assert: sub topic equals: (coya findTopic: #example).
 	self assert: sub typeFilter isNoneFilter
+]
+
+{ #category : #tests }
+CoyaTopicTests >> testTopicCannotBeChangedPublisher [
+
+	| topic topic2 pub  |
+	topic := coya findOrCreateTopic: #example.
+
+	topic2 := coya findOrCreateTopic: #example2.
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+		
+	self assert: pub topic equals: topic. 
+	self should: [ pub topic: topic2 ] raise: Error.
+	self assert: pub topic equals: topic. 
+]
+
+{ #category : #tests }
+CoyaTopicTests >> testTopicCannotBeChangedSubscriber [
+
+	| topic topic2 sub |
+	topic := coya findOrCreateTopic: #example.
+
+	topic2 := coya findOrCreateTopic: #example2.
+	sub := CoyaAsyncSubscription new
+		       owner: self;
+		       typeConstraint: [ :tc | tc shouldUnderstand: #, ];
+		       onReadSend: (Message selector: #value:) to: [ :a |  ];
+		       topic: topic.
+
+
+	self assert: sub topic equals: topic.
+	self should: [ sub topic: topic2 ] raise: Error.
+	self assert: sub topic equals: topic
 ]
 
 { #category : #tests }
 CoyaTopicTests >> testTopicTypedAsyncSubscringProducesAnAsyncSubcripion [
 
 	| sub |
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: self)
-			  type: Object;
-		     onReadSend: (Message selector: #lala:)
-		     to: self.
+	sub := CoyaAsyncSubscription new
+		       owner: self;
+		       type: Object;
+		       onReadSend: (Message selector: #value:) to: [ :a :b |  ];
+		       yourself.
+
+
 
 	self assert: sub isSubscription.
 	self assert: sub owner equals: self.
-	self assert: sub topic equals: (coya findTopic: #example).
 	self assert: sub typeFilter isClassFilter
 ]
 
@@ -276,15 +396,19 @@ CoyaTopicTests >> testTopicTypedAsyncSubscringProducesAnAsyncSubcripion [
 CoyaTopicTests >> testTopicTypedFilterAsyncSubscringProducesAnAsyncSubcripion [
 
 	| sub |
-	sub := ((coya findOrCreateTopic: #example) subscriptionFor: self)
+	sub := CoyaAsyncSubscription new
+		       owner: self;
 		       typeConstraint: [ :tc | 
 			       tc
 				       shouldUnderstand: #thisMessage:;
 				       shouldUnderstand: #otherMessage ];
-		       onReadSend: (Message selector: #lala:) to: self.
+		       onReadSend: (Message selector: #value:) to: [ :a :b |  ];
+		       yourself.
 
-	self assert: sub isSubscription. 
+
+
+
+	self assert: sub isSubscription.
 	self assert: sub owner equals: self.
-	self assert: sub topic equals: (coya findTopic: #example).
 	self assert: sub typeFilter isTypeConstraint
 ]
