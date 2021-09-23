@@ -17,7 +17,7 @@ CoyaSpecWidgetExample class >> defaultSpec [
 { #category : #specs }
 CoyaSpecWidgetExample class >> exmple [
 	<example> 
-	^ self new openWithSpec. 
+	^ self new inspect; openWithSpec. 
 ]
 
 { #category : #initialization }
@@ -37,5 +37,6 @@ CoyaSpecWidgetExample >> initializeTopics [
 
 { #category : #initialization }
 CoyaSpecWidgetExample >> updateBus: aValue [
+	aValue ifNil: [ ^ self ].
 	text text: aValue 
 ]

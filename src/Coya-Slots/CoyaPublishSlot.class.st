@@ -31,6 +31,7 @@ CoyaPublishSlot >> write: aContent to: anObject [
 	| pubVal |
 	pubVal := super read: anObject.
 	pubVal first publish: aContent.
-	pubVal at: 2 put: anObject.
+	
+	pubVal at: 2 put: aContent.
 	
 ]
