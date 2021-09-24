@@ -22,10 +22,12 @@ CoyaSlot >> emitStore: aMethodBuilder [
 		send: #writeSlot:value:
 ]
 
-{ #category : #writing }
-CoyaSlot >> initialize: instance [
-	baseSlot initialize: instance
-
+{ #category : #'meta-object-protocol' }
+CoyaSlot >> emitValue: aMethodBuilder [
+	aMethodBuilder
+		pushLiteral: self;
+		pushReceiver;
+		send: #read:
 ]
 
 { #category : #writing }

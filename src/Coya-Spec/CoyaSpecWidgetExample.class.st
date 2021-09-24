@@ -3,7 +3,7 @@ Class {
 	#superclass : #CoyaSpecWidget,
 	#instVars : [
 		'#text',
-		'#value => CoyaPublishSlot topic: #bus'
+		'#value => CoyaPubSubSlot topic: #bus'
 	],
 	#category : #'Coya-Spec'
 }
@@ -32,11 +32,17 @@ CoyaSpecWidgetExample >> initializePresenters [
 CoyaSpecWidgetExample >> initializeTopics [
 
 	super initializeTopics.
-	self subscribe: #bus activating: #updateBus:
+	"self subscribe: #bus activating: #updateBus:"
+]
+
+{ #category : #initialization }
+CoyaSpecWidgetExample >> updateBus [
+
+	text text: value  
 ]
 
 { #category : #initialization }
 CoyaSpecWidgetExample >> updateBus: aValue [
-	aValue ifNil: [ ^ self ].
+	self halt.
 	text text: aValue 
 ]

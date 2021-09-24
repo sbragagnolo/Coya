@@ -2,16 +2,27 @@ Class {
 	#name : #CoyaAbstractSubscription,
 	#superclass : #CoyaTopicRelatedEntity,
 	#instVars : [
-		'typeFilter'
+		'filter'
 	],
 	#category : #Coya
 }
+
+{ #category : #'as yet unclassified' }
+CoyaAbstractSubscription >> filter [
+	^ filter
+]
+
+{ #category : #'as yet unclassified' }
+CoyaAbstractSubscription >> filter:  aFilter [
+
+	filter := aFilter
+]
 
 { #category : #initialization }
 CoyaAbstractSubscription >> initialize [
 
 	super initialize.
-	typeFilter := CoyaTypeFilter default.
+	filter := CoyaFilter default.
 ]
 
 { #category : #'as yet unclassified' }
@@ -37,7 +48,7 @@ CoyaAbstractSubscription >> receive: anObject [
 CoyaAbstractSubscription >> shouldReceive: aMessage from: anOwner [
 
 	owner = anOwner ifTrue: [ ^ false ].
-	^ typeFilter filter: aMessage
+	^ filter filter: aMessage
 ]
 
 { #category : #'as yet unclassified' }
@@ -45,30 +56,10 @@ CoyaAbstractSubscription >> topic: aTopic [
 	aTopic installSubscription: self 
 ]
 
-{ #category : #'accessing - structure variables' }
-CoyaAbstractSubscription >> type: aClass [
-
-	typeFilter := CoyaTypeFiltersClass new
-		              filteringClass: aClass;
-		              yourself
-]
-
-{ #category : #'as yet unclassified' }
-CoyaAbstractSubscription >> typeConstraint: aFullBlockClosure [
-
-	typeFilter := CoyaTypeFilterConstraint new.
-	aFullBlockClosure value: typeFilter
-]
-
-{ #category : #'as yet unclassified' }
-CoyaAbstractSubscription >> typeFilter [
-	^ typeFilter
-]
-
 { #category : #accessing }
 CoyaAbstractSubscription >> unsubscribe [
 
 	topic unsubscribe: self.
 	topic := nil.
-	typeFilter := nil
+	filter := nil
 ]

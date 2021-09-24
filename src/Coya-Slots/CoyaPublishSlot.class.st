@@ -5,33 +5,30 @@ Class {
 }
 
 { #category : #writing }
-CoyaPublishSlot >> initialize: instance [
-
-	| t pub |
-	super initialize: instance.
-	t := instance coya findOrCreateTopic: topic.
-	pub := CoyaPublication new owner: instance.
-	pub topic: t.
-	super
-		write: { 
-				pub.
-				nil }
-		to: instance
+CoyaPublishSlot >> read: instance [
+	^ (self readTuple: instance ) second
 ]
 
 { #category : #writing }
-CoyaPublishSlot >> read: anObject [
+CoyaPublishSlot >> readTuple: instance [
 
-	^ (super read: anObject) second
+	| t pub |
+	^ (super read: instance) ifNil: [ 
+		  | tuple |
+		  t := instance coya findOrCreateTopic: topic.
+		  pub := CoyaPublication new owner: instance.
+		  pub topic: t.
+		  tuple := { pub.
+			           nil }.
+		  super write: tuple to: instance.
+		  tuple ]
 ]
 
 { #category : #writing }
 CoyaPublishSlot >> write: aContent to: anObject [
 
 	| pubVal |
-	pubVal := super read: anObject.
+	pubVal := self readTuple: anObject.
 	pubVal first publish: aContent.
-	
-	pubVal at: 2 put: aContent.
-	
+	pubVal at: 2 put: aContent
 ]

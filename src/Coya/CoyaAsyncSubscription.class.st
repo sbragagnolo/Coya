@@ -15,7 +15,7 @@ Class {
 CoyaAsyncSubscription >> initialize [
 
 	super initialize.
-
+	onReadSend := [ :v |  ].
 	onErrorHook := [ :error | error debug ]
 ]
 

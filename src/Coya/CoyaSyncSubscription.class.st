@@ -1,6 +1,6 @@
 Class {
 	#name : #CoyaSyncSubscription,
-	#superclass : #CoyaAbstractSubscription,
+	#superclass : #CoyaAsyncSubscription,
 	#instVars : [
 		'value'
 	],
@@ -8,8 +8,14 @@ Class {
 }
 
 { #category : #accessing }
+CoyaSyncSubscription >> privateSetValue: aValue [
+	value := aValue.
+]
+
+{ #category : #accessing }
 CoyaSyncSubscription >> receive: anObject [
-	value := anObject 
+	value := anObject .
+	super receive: anObject.
 ]
 
 { #category : #accessing }

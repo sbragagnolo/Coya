@@ -2,54 +2,66 @@ Class {
 	#name : #CoyaPubSubSlot,
 	#superclass : #CoyaSlot,
 	#instVars : [
-		'type'
+		'type',
+		'selector'
 	],
 	#category : #'Coya-Slots'
 }
 
 { #category : #writing }
-CoyaPubSubSlot >> initialize: instance [
-
-	| t pub sub |
-	super initialize: instance.
-	t := instance coya findOrCreateTopic: topic.
-	pub := CoyaPublication new owner: instance .
-	pub topic: t.
-	super initialize: instance.
-	t := instance coya findOrCreateTopic: topic.
-	sub := CoyaSyncSubscription new owner: self.
-	type ifNotNil: [ sub type: (self class environment at: type) ].
-	sub topic: t.
-
-
-
-	super
-		write: { 
-				pub.
-				sub }
-		to: instance
-]
-
-{ #category : #writing }
 CoyaPubSubSlot >> printOn: aStream [
-	type ifNil: [ ^ super printOn: aStream ].
-	aStream 
+
+	aStream
 		store: self name;
 		nextPutAll: ' => ';
 		nextPutAll: self class name.
-	
+
 	aStream
 		nextPutAll: ' topic: #';
-		nextPutAll: topic asSymbol;
-		nextPutAll: ' type: #';
-		nextPutAll: type asSymbol
-
+		nextPutAll: topic asSymbol.
+	type ifNotNil: [ 
+		aStream
+			nextPutAll: ' type: #';
+			nextPutAll: type asSymbol ].
+	selector ifNotNil: [ 
+		aStream
+			nextPutAll: ' selector:#';
+			nextPutAll: selector ]
 ]
 
 { #category : #writing }
 CoyaPubSubSlot >> read: anObject [
 
-	^ (super read: anObject) second value 
+	^ (self readTuple: anObject) second value
+]
+
+{ #category : #writing }
+CoyaPubSubSlot >> readTuple: instance [
+
+	| t pub sub |
+	^ (super read: instance) ifNil: [ 
+		  | tuple |
+		  t := instance coya findOrCreateTopic: topic.
+		  pub := CoyaPublication new owner: instance.
+		  pub topic: t.
+
+		  sub := CoyaSyncSubscription new owner: instance.
+		  type ifNotNil: [ sub type: (self class environment at: type) ].
+		  selector ifNotNil: [ 
+			  sub onReadSend: (Message selector: selector) to: instance ].
+		  sub topic: t.
+
+		  tuple := { 
+			           pub.
+			           sub }.
+		  super write: tuple to: instance.
+		  tuple ]
+]
+
+{ #category : #writing }
+CoyaPubSubSlot >> topic: aName selector: aSelector [
+	topic := aName.
+	selector := aSelector
 ]
 
 { #category : #writing }
@@ -59,11 +71,18 @@ CoyaPubSubSlot >> topic: aName type: aType [
 ]
 
 { #category : #writing }
+CoyaPubSubSlot >> topic: aName type: aType selector: aSelector [
+	self topic: aName type: aType .
+	selector := aSelector.
+]
+
+{ #category : #writing }
 CoyaPubSubSlot >> write: aContent to: anObject [
 
 	| pubVal |
 	pubVal := super read: anObject.
 	pubVal first publish: aContent.
+	pubVal second privateSetValue: aContent. 
 	
 	
 ]
