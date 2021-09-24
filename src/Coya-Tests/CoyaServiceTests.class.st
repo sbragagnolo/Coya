@@ -47,7 +47,7 @@ CoyaServiceTests >> testServiceExecutorInstanceIsAlwaysDifferent [
 
 	| service executors |
 	service := coya findOrCreateService: #getItDone.
-	executors := (1 to: 10 ) collect: [CoyaServiceExecutor new
+	executors := (1 to: 10 ) collect: [: i | CoyaServiceExecutor new
 		            service: service;
 		            owner: 1.].
 
@@ -68,12 +68,12 @@ CoyaServiceTests >> testServiceExecutorWhenNoneProviderIsAvailableIfNoneProvider
 ]
 
 { #category : #tests }
-CoyaServiceTests >> testServicesProviderShouldRespondToSxecutor [
+CoyaServiceTests >> testServicesProviderShouldRespondToExecutor [
 
 	| service provider executor var param |
 	service := coya findOrCreateService: #getItDone.
 	provider := CoyaServiceProvider new
-		            onRequestSend: (Message selector: #value:)
+		            onRequestSend: (Message selector: #value:value:)
 		            to: [ :request :interested | 
 			            param := request.
 			            var := interested.

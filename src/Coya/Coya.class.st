@@ -5,10 +5,20 @@ Class {
 	#name : #Coya,
 	#superclass : #Object,
 	#instVars : [
-		'topics'
+		'topics',
+		'services'
 	],
 	#category : #Coya
 }
+
+{ #category : #'as yet unclassified' }
+Coya >> findOrCreateService: aString [
+
+	^ services at: aString ifAbsentPut: [ 
+		  CoyaService new
+			  name: aString;
+			  yourself ]
+]
 
 { #category : #'Low API' }
 Coya >> findOrCreateTopic: aString [
@@ -19,6 +29,21 @@ Coya >> findOrCreateTopic: aString [
 		  t name: aString.
 		  topics add: t.
 		  t ]
+]
+
+{ #category : #accessing }
+Coya >> findService: aString [
+
+	^ self
+		  findService: aString
+		  ifNone: [ 
+		  NotFound signal: aString , ' is not a valid service name ' ]
+]
+
+{ #category : #'as yet unclassified' }
+Coya >> findService: aString ifNone: aFullBlockClosure [
+
+	^ services at: aString ifAbsent: [ aFullBlockClosure value ]
 ]
 
 { #category : #'Low API' }
@@ -41,7 +66,8 @@ Coya >> findTopic: aString ifNone: aFullBlockClosure [
 Coya >> initialize [
 
 	super initialize.
-	topics := Set new
+	topics := Set new.
+	services := Dictionary new. 
 ]
 
 { #category : #'Convenience API' }
