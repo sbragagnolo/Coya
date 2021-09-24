@@ -4,7 +4,7 @@ I represent a publication. I am a writting end of a topic. Belong to one spefici
 Class {
 	#name : #CoyaPublication,
 	#superclass : #CoyaTopicRelatedEntity,
-	#category : #Coya
+	#category : #'Coya-Topics'
 }
 
 { #category : #testing }

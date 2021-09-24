@@ -1,21 +1,24 @@
+"
+I am a service client. I am able to invoke a service with the proper parameters 
+"
 Class {
-	#name : #CoyaServiceExecutor,
+	#name : #CoyaServiceClient,
 	#superclass : #Object,
 	#instVars : [
 		'service',
 		'owner'
 	],
-	#category : #'Coya-Tests'
+	#category : #'Coya-Services'
 }
 
 { #category : #accessing }
-CoyaServiceExecutor >> owner: anOwner [
+CoyaServiceClient >> owner: anOwner [
 
 	owner := anOwner
 ]
 
 { #category : #accessing }
-CoyaServiceExecutor >> request: aParameter [
+CoyaServiceClient >> request: aParameter [
 
 	^ self
 		  request: aParameter
@@ -24,7 +27,7 @@ CoyaServiceExecutor >> request: aParameter [
 ]
 
 { #category : #'as yet unclassified' }
-CoyaServiceExecutor >> request: aParamter ifNoneProvider: aFullBlockClosure [
+CoyaServiceClient >> request: aParamter ifNoneProvider: aFullBlockClosure [
 
 	^ service
 		  request: aParamter
@@ -33,7 +36,7 @@ CoyaServiceExecutor >> request: aParamter ifNoneProvider: aFullBlockClosure [
 ]
 
 { #category : #accessing }
-CoyaServiceExecutor >> service: aCoyaService [
+CoyaServiceClient >> service: aCoyaService [
 
 	service := aCoyaService
 ]

@@ -8,7 +8,7 @@ Class {
 		'topics',
 		'services'
 	],
-	#category : #Coya
+	#category : #'Coya-Core'
 }
 
 { #category : #'as yet unclassified' }

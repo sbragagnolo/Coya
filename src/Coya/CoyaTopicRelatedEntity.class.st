@@ -8,7 +8,7 @@ Class {
 		'topic',
 		'owner'
 	],
-	#category : #Coya
+	#category : #'Coya-Topics'
 }
 
 { #category : #accessing }

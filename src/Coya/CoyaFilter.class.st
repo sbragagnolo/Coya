@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'rules'
 	],
-	#category : #Coya
+	#category : #'Coya-Core'
 }
 
 { #category : #accessing }

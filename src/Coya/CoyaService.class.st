@@ -1,3 +1,6 @@
+"
+I represent a named service i represent a provider that is able to process a request and to respond to a client .
+"
 Class {
 	#name : #CoyaService,
 	#superclass : #Object,
@@ -5,7 +8,7 @@ Class {
 		'name',
 		'provider'
 	],
-	#category : #Coya
+	#category : #'Coya-Services'
 }
 
 { #category : #'as yet unclassified' }

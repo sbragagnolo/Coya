@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'filter'
 	],
-	#category : #Coya
+	#category : #'Coya-Topics'
 }
 
 { #category : #'as yet unclassified' }
@@ -18,7 +18,7 @@ CoyaAbstractSubscription >> filter:  aFilter [
 	filter := aFilter
 ]
 
-{ #category : #initialization }
+{ #category : #'as yet unclassified' }
 CoyaAbstractSubscription >> initialize [
 
 	super initialize.

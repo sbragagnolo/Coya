@@ -36,7 +36,7 @@ CoyaServiceTests >> testServiceExecutorGetsExceptionWhenNoneProviderIsAvailable 
 
 	| service executor |
 	service := coya findOrCreateService: #getItDone.
-	executor := CoyaServiceExecutor new
+	executor := CoyaServiceClient new
 		            service: service;
 		            owner: self.
 	self should: [ executor request: 1 ] raise: NoneProvider
@@ -47,7 +47,7 @@ CoyaServiceTests >> testServiceExecutorInstanceIsAlwaysDifferent [
 
 	| service executors |
 	service := coya findOrCreateService: #getItDone.
-	executors := (1 to: 10 ) collect: [: i | CoyaServiceExecutor new
+	executors := (1 to: 10 ) collect: [: i | CoyaServiceClient new
 		            service: service;
 		            owner: 1.].
 
@@ -60,7 +60,7 @@ CoyaServiceTests >> testServiceExecutorWhenNoneProviderIsAvailableIfNoneProvider
 	| service executor var |
 	var := false.
 	service := coya findOrCreateService: #getItDone.
-	executor := CoyaServiceExecutor new
+	executor := CoyaServiceClient new
 		            service: service;
 		            owner: self.
 	executor request: 1 ifNoneProvider: [ var := true ].
@@ -80,7 +80,7 @@ CoyaServiceTests >> testServicesProviderShouldRespondToExecutor [
 			            42 ];
 		            service: service;
 		            owner: self.
-	executor := CoyaServiceExecutor new
+	executor := CoyaServiceClient new
 		            service: service;
 		            owner: self.
 	self assert: (executor request: 10) equals: 42.

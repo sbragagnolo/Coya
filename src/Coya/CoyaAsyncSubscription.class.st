@@ -8,7 +8,7 @@ Class {
 		'onErrorHook',
 		'onReadSend'
 	],
-	#category : #Coya
+	#category : #'Coya-Topics'
 }
 
 { #category : #'as yet unclassified' }

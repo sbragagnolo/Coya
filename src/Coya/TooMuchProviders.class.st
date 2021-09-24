@@ -1,5 +1,5 @@
 Class {
 	#name : #TooMuchProviders,
 	#superclass : #Error,
-	#category : #'Coya-Tests'
+	#category : #'Coya-Core'
 }

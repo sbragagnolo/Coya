@@ -1,3 +1,6 @@
+"
+I am a service provider. I am here to hold some callback mechanism and to ensure the linking between the callback and the service client. 
+"
 Class {
 	#name : #CoyaServiceProvider,
 	#superclass : #Object,
@@ -6,7 +9,7 @@ Class {
 		'service',
 		'owner'
 	],
-	#category : #'Coya-Tests'
+	#category : #'Coya-Services'
 }
 
 { #category : #'as yet unclassified' }

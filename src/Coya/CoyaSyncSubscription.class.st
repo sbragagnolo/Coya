@@ -1,10 +1,13 @@
+"
+I am a synchronous subscription that allows to set callbacks, but however i do also store the last value received. 
+"
 Class {
 	#name : #CoyaSyncSubscription,
 	#superclass : #CoyaAsyncSubscription,
 	#instVars : [
 		'value'
 	],
-	#category : #Coya
+	#category : #'Coya-Topics'
 }
 
 { #category : #accessing }

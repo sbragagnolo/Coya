@@ -12,7 +12,7 @@ Class {
 		'lastMessage',
 		'lastPublisher'
 	],
-	#category : #Coya
+	#category : #'Coya-Topics'
 }
 
 { #category : #configuration }
