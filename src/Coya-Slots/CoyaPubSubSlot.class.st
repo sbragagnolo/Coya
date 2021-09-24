@@ -1,3 +1,11 @@
+"
+I do represent a Publisher / Subscriber slot. 
+What ever information set on me is going to be transmited to whatever interested counter part in the system. 
+When ever i am used to read i am going to return the most fresh value on the topic 
+I can be configured to filter messages.
+I can be configured to send a message to my object owner when a data has been updated .
+
+"
 Class {
 	#name : #CoyaPubSubSlot,
 	#superclass : #CoyaSlot,

@@ -1,9 +1,17 @@
+"
+I am a readonly slot. 
+I am not to write. 
+When read i do return the last value available on the topic .
+I can be configured to filter messages. 
+I can be configured to send a message to my object owner when a data has been updated .
+"
 Class {
 	#name : #CoyaSubscribeSlot,
 	#superclass : #CoyaSlot,
 	#instVars : [
 		'typeFilter',
-		'selector'
+		'selector',
+		'type'
 	],
 	#category : #'Coya-Slots'
 }
@@ -43,7 +51,9 @@ CoyaSubscribeSlot >> readSubscription: instance [
 	sub ifNotNil: [ ^ sub ].
 	t := instance coya findOrCreateTopic: topic.
 	sub := CoyaSyncSubscription new owner: instance.
-	type ifNotNil: [ sub type: (self class environment at: type) ].
+	type ifNotNil: [ 
+		sub filter:
+			(CoyaFilter shouldBeKindOf: (self class environment at: type)) ].
 	selector ifNotNil: [ 
 		sub onReadSend: (Message selector: selector) to: instance ].
 	sub topic: t.
@@ -58,9 +68,10 @@ CoyaSubscribeSlot >> topic: aName selector: aSelector [
 ]
 
 { #category : #'meta-object-protocol' }
-CoyaSubscribeSlot >> topic: aName type: aType [ 
+CoyaSubscribeSlot >> topic: aName type: aType [
+
 	topic := aName.
-	typeFilter := aType.
+	type := aType
 ]
 
 { #category : #'meta-object-protocol' }

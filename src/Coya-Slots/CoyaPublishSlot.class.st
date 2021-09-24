@@ -1,3 +1,8 @@
+"
+I am a publishing slot. 
+Whatever written on me is going to be available on the system immediately. 
+However when i am read i allways return the last value that has been stored on me. 
+"
 Class {
 	#name : #CoyaPublishSlot,
 	#superclass : #CoyaSlot,

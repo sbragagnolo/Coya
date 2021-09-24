@@ -8,7 +8,8 @@ Class {
 	#name : #CoyaSpecWidget,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'subs'
+		'subscriptions',
+		'services'
 	],
 	#category : #'Coya-Spec'
 }
@@ -38,7 +39,8 @@ CoyaSpecWidget >> displayStringOn: aStream [
 { #category : #'as yet unclassified' }
 CoyaSpecWidget >> initialize [
 
-	subs := OrderedCollection new.
+	subscriptions := OrderedCollection new.
+	services := Dictionary new.
 	super initialize
 ]
 
@@ -60,11 +62,36 @@ CoyaSpecWidget >> initializeWindow: aWindow [
 ]
 
 { #category : #'as yet unclassified' }
+CoyaSpecWidget >> provide: aServiceName sending: aSymbolSelector to: anObject [
+
+	| serv |
+	serv := self coya findOrCreateService: aServiceName.
+
+
+
+	services at: aServiceName put: [ 
+		CoyaServiceProvider new
+			onRequestSend: (Message selector: aSymbolSelector) to: anObject;
+			service: serv;
+			yourself ]
+]
+
+{ #category : #'as yet unclassified' }
+CoyaSpecWidget >> request: aServiceName argument: anArgument [
+	| t |
+	t := self coya findOrCreateService: aServiceName.
+	^ CoyaServiceClient new
+		  owner: self;
+		  service: t;
+		  request: anArgument ifNoneProvider: [ nil ]
+]
+
+{ #category : #'as yet unclassified' }
 CoyaSpecWidget >> subscribe: aTopicName activating: aSelector [
 
 	| t |
 	t := self coya findOrCreateTopic: aTopicName.
-	subs add: (CoyaAsyncSubscription new
+	subscriptions add: (CoyaAsyncSubscription new
 			 owner: self;
 			 onReadSend: (Message selector: aSelector) to: self;
 			 topic: t;
