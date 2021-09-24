@@ -13,8 +13,10 @@ Class {
 
 { #category : #'as yet unclassified' }
 CoyaService >> installProvider: aCoyaServiceProvider [
-
-	provider ifNotNil: [ 
+	| prov |
+	prov := provider ifNotNil: [ :p | p first ].
+	
+	prov ifNotNil: [ 
 		^ TooMuchProviders signal: 'The service has already a provider' ].
 	provider := aCoyaServiceProvider asWeakReference.
 	aCoyaServiceProvider setService: self
@@ -32,5 +34,5 @@ CoyaService >> request: aParameter for: aClient ifNoneProvider: aFullBlockClosur
 	prov := provider ifNotNil: [ :p | p first ].
 	^ prov
 		  ifNil: [ aFullBlockClosure value ]
-		  ifNotNil: [ provider request: aParameter for: aClient ]
+		  ifNotNil: [ prov request: aParameter for: aClient ]
 ]

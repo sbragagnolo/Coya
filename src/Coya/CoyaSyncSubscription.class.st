@@ -16,9 +16,10 @@ CoyaSyncSubscription >> privateSetValue: aValue [
 ]
 
 { #category : #accessing }
-CoyaSyncSubscription >> receive: anObject [
-	value := anObject .
-	super receive: anObject.
+CoyaSyncSubscription >> receive: anObject from: aSender [
+
+	value := anObject.
+	super receive: anObject from: aSender
 ]
 
 { #category : #accessing }

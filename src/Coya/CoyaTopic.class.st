@@ -101,7 +101,7 @@ CoyaTopic >> publisher: anOwner publishes: aContent [
 
 	self subscribers
 		select: [ :s | s shouldReceive: aContent from: anOwner ]
-		thenDo: [ :s | s receive: aContent ]
+		thenDo: [ :s | s receive: aContent from: anOwner ]
 ]
 
 { #category : #accessing }

@@ -48,11 +48,11 @@ CoyaSpecWidget >> initialize [
 CoyaSpecWidget >> initializePrivateHooks [
 
 	super initializePrivateHooks.
-	self initializeTopics
+	self initializeTopicsAndServices
 ]
 
 { #category : #'as yet unclassified' }
-CoyaSpecWidget >> initializeTopics [
+CoyaSpecWidget >> initializeTopicsAndServices [ 
 	" Initialize here the Coya connections "
 ]
 
@@ -66,14 +66,10 @@ CoyaSpecWidget >> provide: aServiceName sending: aSymbolSelector to: anObject [
 
 	| serv |
 	serv := self coya findOrCreateService: aServiceName.
-
-
-
-	services at: aServiceName put: [ 
-		CoyaServiceProvider new
-			onRequestSend: (Message selector: aSymbolSelector) to: anObject;
-			service: serv;
-			yourself ]
+	services at: aServiceName put: (CoyaServiceProvider new
+			 onRequestSend: (Message selector: aSymbolSelector) to: anObject;
+			 service: serv;
+			 yourself)
 ]
 
 { #category : #'as yet unclassified' }

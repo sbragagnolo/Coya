@@ -51,18 +51,23 @@ CoyaPubSubSlot >> readTuple: instance [
 		  | tuple |
 		  t := instance coya findOrCreateTopic: topic.
 		  pub := CoyaPublication new owner: instance.
-		  pub topic: t.
+
 
 		  sub := CoyaSyncSubscription new owner: instance.
-		  type ifNotNil: [ sub type: (self class environment at: type) ].
+		  type ifNotNil: [ 
+			  sub filter:
+				  (CoyaFilter shouldBeKindOf: (self class environment at: type)) ].
 		  selector ifNotNil: [ 
 			  sub onReadSend: (Message selector: selector) to: instance ].
-		  sub topic: t.
+
 
 		  tuple := { 
 			           pub.
 			           sub }.
 		  super write: tuple to: instance.
+		  pub topic: t.
+		  sub topic: t.
+
 		  tuple ]
 ]
 
@@ -88,7 +93,7 @@ CoyaPubSubSlot >> topic: aName type: aType selector: aSelector [
 CoyaPubSubSlot >> write: aContent to: anObject [
 
 	| pubVal |
-	pubVal := super read: anObject.
+	pubVal :=  self readTuple: anObject.
 	pubVal first publish: aContent.
 	pubVal second privateSetValue: aContent. 
 	

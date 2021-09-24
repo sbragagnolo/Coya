@@ -31,7 +31,7 @@ CoyaAbstractSubscription >> installedInto: aTopic [
 	super installedInto: aTopic.
 	aTopic latching ifTrue: [ 
 		(self shouldReceive: aTopic lastMessage from: aTopic lastPublisher) 
-			ifTrue: [ self receive: aTopic lastMessage ] ]
+			ifTrue: [ self receive: aTopic lastMessage from: aTopic lastPublisher ] ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -40,7 +40,7 @@ CoyaAbstractSubscription >> isSubscription [
 ]
 
 { #category : #accessing }
-CoyaAbstractSubscription >> receive: anObject [
+CoyaAbstractSubscription >> receive: anObject from: aSender [
 	self subclassResponsibility 
 ]
 

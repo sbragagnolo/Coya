@@ -38,9 +38,9 @@ CoyaAsyncSubscription >> onReadSend: aMessage to: anObject [
 ]
 
 { #category : #accessing }
-CoyaAsyncSubscription >> receive: anObject [
+CoyaAsyncSubscription >> receive: anObject from: aSender [
 
-	[ onReadSend  cull: anObject ]
+	[ onReadSend cull: anObject cull: aSender ]
 		on: Error
 		do: [ :e | onErrorHook cull: e cull: anObject ]
 ]

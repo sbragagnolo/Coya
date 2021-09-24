@@ -20,6 +20,11 @@ CoyaApplication class >> instance [
 ]
 
 { #category : #accessing }
+CoyaApplication class >> reset [
+	instance := nil 
+]
+
+{ #category : #accessing }
 CoyaApplication >> coya [
 	^ coya
 ]

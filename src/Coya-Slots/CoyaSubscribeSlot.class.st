@@ -56,8 +56,9 @@ CoyaSubscribeSlot >> readSubscription: instance [
 			(CoyaFilter shouldBeKindOf: (self class environment at: type)) ].
 	selector ifNotNil: [ 
 		sub onReadSend: (Message selector: selector) to: instance ].
-	sub topic: t.
+
 	super write: sub to: instance.
+	sub topic: t.
 	^ sub
 ]
 
@@ -82,5 +83,5 @@ CoyaSubscribeSlot >> topic: aName type: aType selector: aSelector [
 
 { #category : #'meta-object-protocol' }
 CoyaSubscribeSlot >> write: aValue to: anObject [
-	^ self error: 'Read only slot'
+	
 ]

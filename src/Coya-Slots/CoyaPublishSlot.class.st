@@ -22,10 +22,12 @@ CoyaPublishSlot >> readTuple: instance [
 		  | tuple |
 		  t := instance coya findOrCreateTopic: topic.
 		  pub := CoyaPublication new owner: instance.
-		  pub topic: t.
-		  tuple := { pub.
+
+		  tuple := { 
+			           pub.
 			           nil }.
 		  super write: tuple to: instance.
+		  pub topic: t.
 		  tuple ]
 ]
 
