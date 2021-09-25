@@ -33,9 +33,10 @@ TCoyaConvenienceAPI >> publisher: aTopicName for: anObject [
 
 	| t |
 	t := self coya findOrCreateTopic: aTopicName.
-	^ t publicationFor: self ifNone: [ 
+	^ t publicationFor: anObject ifNone: [ 
 		  CoyaPublication new
 			  owner: anObject;
+			  topic: t;
 			  yourself ]
 ]
 
@@ -87,5 +88,7 @@ TCoyaConvenienceAPI >> subscriptions [
 { #category : #'as yet unclassified' }
 TCoyaConvenienceAPI >> unsubscribeAll [
 
-	self coya unregisterOwner: self
+	self coya unregisterOwner: self.
+	subscriptions ifNotNil: [ subscriptions removeAll ].
+	services ifNotNil: [ services removeAll ]
 ]

@@ -1,3 +1,7 @@
+"
+I am here as a dummy. 
+I am specially to test the collision of slot topics 
+"
 Class {
 	#name : #CoyaSlotsDummy,
 	#superclass : #Object,

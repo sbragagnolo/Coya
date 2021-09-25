@@ -42,8 +42,9 @@ CoyaSlot >> installingIn: aClass [
 	super installingIn: aClass.
 
 	(aClass allSlots anySatisfy: [ :slot | 
-		 (slot isKindOf: CoyaSlot) and: [ 
-			 topic = slot topic and: [ self sharesRoleWith: slot ] ] ]) 
+		 slot ~= self and: [ 
+			 (slot isKindOf: CoyaSlot) and: [ 
+				 topic = slot topic and: [ self sharesRoleWith: slot ] ] ] ]) 
 		ifTrue: [ 
 			DuplicatedSlotTopicAndKind signal:
 				'There is already other slot with the same role and topic ' ]
