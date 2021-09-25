@@ -88,7 +88,7 @@ CoyaTopic >> name: aString [
 CoyaTopic >> publicationFor: anOwner [
 
 	^ self
-		  publicationFor: [ :p | p owner = anOwner ]
+		  publicationFor: anOwner
 		  ifNone: [ self error: 'NonPublisher' ]
 ]
 

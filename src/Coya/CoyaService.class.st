@@ -27,6 +27,12 @@ CoyaService >> name: aString [
 	name := aString
 ]
 
+{ #category : #accessing }
+CoyaService >> provider [
+
+	^ provider ifNotNil: [ :p | p first ]
+]
+
 { #category : #'as yet unclassified' }
 CoyaService >> request: aParameter for: aClient ifNoneProvider: aFullBlockClosure [
 

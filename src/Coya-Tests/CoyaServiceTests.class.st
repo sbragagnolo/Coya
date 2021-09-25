@@ -68,6 +68,25 @@ CoyaServiceTests >> testServiceExecutorWhenNoneProviderIsAvailableIfNoneProvider
 ]
 
 { #category : #tests }
+CoyaServiceTests >> testServiceProviderAutorelease [
+
+	| service param var provider |
+	service := coya findOrCreateService: #getItDone.
+	provider := CoyaServiceProvider new
+		            onRequestSend: (Message selector: #value:value:)
+		            to: [ :request :interested | 
+			            param := request.
+			            var := interested.
+			            42 ];
+		            service: service;
+		            owner: self.
+	self assert: service provider equals: provider.
+	provider := nil.
+	Smalltalk garbageCollect.
+	self assert: service provider isNil
+]
+
+{ #category : #tests }
 CoyaServiceTests >> testServicesProviderShouldRespondToExecutor [
 
 	| service provider executor var param |

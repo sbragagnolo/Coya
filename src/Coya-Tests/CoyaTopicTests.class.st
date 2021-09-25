@@ -201,6 +201,22 @@ CoyaTopicTests >> testObjectTypedSubscriberReceivesNoneFromHimself [
 ]
 
 { #category : #tests }
+CoyaTopicTests >> testPublisherAutorelease [
+	
+
+	| topic pub |
+	topic := coya findOrCreateTopic: #example.
+
+	pub := CoyaPublication new
+		       owner: self;
+		       topic: topic.
+	self assert: (topic publicationFor: self) equals: pub. 
+	pub := nil. 
+	Smalltalk garbageCollect .
+	self should: [ topic publicationFor: self ] raise: Error.
+]
+
+{ #category : #tests }
 CoyaTopicTests >> testStringTypedSubscriberPublishProducesErrorAfterUnregister [
 
 
@@ -319,6 +335,22 @@ CoyaTopicTests >> testSubscriberManagesErrorWithHook [
 	pub publish: #hello.
 	self assert: text isNotNil.
 	self assert: causedBy equals: #hello
+]
+
+{ #category : #tests }
+CoyaTopicTests >> testSubscriptionAutorelease [
+	
+
+	| topic sub |
+	topic := coya findOrCreateTopic: #example.
+
+	sub := CoyaAsyncSubscription new
+		       owner: self;
+		       topic: topic.
+	self assert: (topic subscriptionFor: self) equals: sub. 
+	sub := nil. 
+	 Smalltalk garbageCollect  .
+	self should: [ topic subscriptionFor: self ] raise: Error.
 ]
 
 { #category : #tests }
