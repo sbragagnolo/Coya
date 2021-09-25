@@ -15,7 +15,9 @@ CoyaPublication >> isPublication [
 { #category : #'as yet unclassified' }
 CoyaPublication >> publish: aContent [
 
-	topic ifNotNil: [ topic publisher: owner publishes: aContent ]
+	topic ifNil: [ self error: 'The publisher is not connected to any valid topic' ].
+
+	^ topic publisher: owner publishes: aContent
 ]
 
 { #category : #'as yet unclassified' }
