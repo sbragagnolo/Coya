@@ -51,6 +51,7 @@ CoyaSlot >> printOn: aStream [
 
 { #category : #writing }
 CoyaSlot >> topic: aName [
+	self assert: aName isSymbol description: 'Not valid name' .
 	topic := aName 
 ]
 

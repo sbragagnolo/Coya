@@ -64,23 +64,23 @@ CoyaSubscribeSlot >> readSubscription: instance [
 
 { #category : #'meta-object-protocol' }
 CoyaSubscribeSlot >> topic: aName selector: aSelector [
-	topic := aName.
+	self topic: aName.
+	self assert: aSelector isSymbol description: 'Invalid selector'.
 	selector := aSelector
 ]
 
 { #category : #'meta-object-protocol' }
 CoyaSubscribeSlot >> topic: aName type: aType [
-	self assert: aName isSymbol.
-	self assert: aType isSymbol.
-	topic := aName.
+	self topic: aName.
+	self assert: aType isSymbol description: 'Invalid type name'.
 	type := aType
 ]
 
 { #category : #'meta-object-protocol' }
 CoyaSubscribeSlot >> topic: aName type: aType selector: aSelector [
 
-	self assert: aSelector isSymbol.
 	self topic: aName type: aType.
+	self assert: aSelector isSymbol description: 'Invalid selector'.
 
 	selector := aSelector
 ]

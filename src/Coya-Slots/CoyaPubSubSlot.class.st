@@ -73,19 +73,22 @@ CoyaPubSubSlot >> readTuple: instance [
 
 { #category : #writing }
 CoyaPubSubSlot >> topic: aName selector: aSelector [
-	topic := aName.
+	self topic: aName. 
+	self assert: aSelector isSymbol description: 'Invalid selector'.
 	selector := aSelector
 ]
 
 { #category : #writing }
 CoyaPubSubSlot >> topic: aName type: aType [ 
-	topic := aName.
+	self topic: aName.
+	self assert: aType isSymbol description: 'Invalid type name'.
 	type := aType.
 ]
 
 { #category : #writing }
 CoyaPubSubSlot >> topic: aName type: aType selector: aSelector [
 	self topic: aName type: aType .
+	self assert: aSelector isSymbol description: 'Invalid selector'.
 	selector := aSelector.
 ]
 
