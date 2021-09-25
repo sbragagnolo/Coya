@@ -1,3 +1,7 @@
+"
+Provides a convenient API, holding the proper objects. 
+It requires the implementation of a coya method that returns a Coya instance. 
+"
 Trait {
 	#name : #TCoyaConvenienceAPI,
 	#instVars : [
@@ -10,7 +14,7 @@ Trait {
 { #category : #initialization }
 TCoyaConvenienceAPI >> coya [
 
-	^ self application coya
+	^ self subclassResponsibility
 ]
 
 { #category : #'as yet unclassified' }

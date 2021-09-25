@@ -1,3 +1,9 @@
+"
+CoyaSlot allows the usage of topics by name. 
+It uses a BaseSlot to store configuration and value.
+emitStore: / emitValue: are redefined to ensure the sole usage of #read: and #write:to:.
+
+"
 Class {
 	#name : #CoyaSlot,
 	#superclass : #PropertySlot,
