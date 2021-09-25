@@ -34,7 +34,7 @@ CoyaSpecArithmeticalServiceWidget >> initializePresenters [
 
 { #category : #initialization }
 CoyaSpecArithmeticalServiceWidget >> initializeTopicsAndServices [
-	services inspect. 
+
 	self provide: #arithmeticalService sending: #value:from: to: self
 ]
 
