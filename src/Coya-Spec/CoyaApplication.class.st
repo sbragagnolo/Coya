@@ -4,6 +4,8 @@ I am an application that holds a coya instance.
 Class {
 	#name : #CoyaApplication,
 	#superclass : #SpApplication,
+	#traits : 'TCoyaConvenienceAPI',
+	#classTraits : 'TCoyaConvenienceAPI classTrait',
 	#instVars : [
 		'coya'
 	],
@@ -33,4 +35,9 @@ CoyaApplication >> coya [
 CoyaApplication >> initialize [ 
 	super initialize.
 	coya := Coya new.
+	self initializeTopicsAndServices 
+]
+
+{ #category : #accessing }
+CoyaApplication >> initializeTopicsAndServices [
 ]

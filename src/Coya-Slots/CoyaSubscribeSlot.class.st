@@ -30,7 +30,7 @@ CoyaSubscribeSlot >> printOn: aStream [
 	type ifNotNil: [ 
 		aStream
 			nextPutAll: ' type: #';
-			nextPutAll: type asSymbol ].
+			nextPutAll: type  asSymbol ].
 	selector ifNotNil: [ 
 		aStream
 			nextPutAll: ' selector:#';
@@ -70,15 +70,19 @@ CoyaSubscribeSlot >> topic: aName selector: aSelector [
 
 { #category : #'meta-object-protocol' }
 CoyaSubscribeSlot >> topic: aName type: aType [
-
+	self assert: aName isSymbol.
+	self assert: aType isSymbol.
 	topic := aName.
 	type := aType
 ]
 
 { #category : #'meta-object-protocol' }
 CoyaSubscribeSlot >> topic: aName type: aType selector: aSelector [
-	self topic: aName type: aType .
-	selector := aSelector.
+
+	self assert: aSelector isSymbol.
+	self topic: aName type: aType.
+
+	selector := aSelector
 ]
 
 { #category : #'meta-object-protocol' }

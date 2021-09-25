@@ -15,7 +15,7 @@ CoyaPublication >> isPublication [
 { #category : #'as yet unclassified' }
 CoyaPublication >> publish: aContent [
 
-	topic publisher: owner publishes: aContent
+	topic ifNotNil: [ topic publisher: owner publishes: aContent ]
 ]
 
 { #category : #'as yet unclassified' }

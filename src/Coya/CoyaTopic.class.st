@@ -87,9 +87,15 @@ CoyaTopic >> name: aString [
 { #category : #accessing }
 CoyaTopic >> publicationFor: anOwner [
 
-	^ self publishers
-		  detect: [ :p | p owner = anOwner ]
+	^ self
+		  publicationFor: [ :p | p owner = anOwner ]
 		  ifNone: [ self error: 'NonPublisher' ]
+]
+
+{ #category : #accessing }
+CoyaTopic >> publicationFor: anOwner ifNone: aBlock [
+
+	^ self publishers detect: [ :p | p owner = anOwner ] ifNone: aBlock
 ]
 
 { #category : #publishing }
@@ -119,9 +125,15 @@ CoyaTopic >> subscribers [
 { #category : #accessing }
 CoyaTopic >> subscriptionFor: anOwner [
 
-	^ self subscribers
-		  detect: [ :p | p owner = anOwner ]
+	^ self
+		  subscriptionFor: anOwner
 		  ifNone: [ self error: 'Non subscription found' ]
+]
+
+{ #category : #accessing }
+CoyaTopic >> subscriptionFor: anOwner ifNone: aBlock [
+
+	^ self subscribers detect: [ :p | p owner = anOwner ] ifNone: aBlock
 ]
 
 { #category : #register }
