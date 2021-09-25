@@ -9,6 +9,13 @@ Class {
 	#category : #'Coya-Slots'
 }
 
+{ #category : #initialization }
+CoyaPublishSlot >> initialize [
+	
+	self class initializeSlots: self.
+	super initialize.
+]
+
 { #category : #writing }
 CoyaPublishSlot >> read: instance [
 	^ (self readTuple: instance ) second

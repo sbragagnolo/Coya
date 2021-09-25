@@ -1,10 +1,25 @@
 Class {
 	#name : #CoyaSlotsTests,
 	#superclass : #TestCase,
+	#instVars : [
+		'coya'
+	],
 	#category : #'Coya-Tests'
 }
 
-{ #category : #tests }
+{ #category : #'configuration test' }
+CoyaSlotsTests >> coya [ 	
+	^ coya ifNil: [ coya := Coya new  ]
+]
+
+{ #category : #initialization }
+CoyaSlotsTests >> initialize [
+	
+	self class initializeSlots: self.
+	super initialize.
+]
+
+{ #category : #'configuration test' }
 CoyaSlotsTests >> testCoyaPubSubSlotDoesAcceptOnlySymbols [
 
 	self assert: (((CoyaPubSubSlot named: #name)
@@ -13,7 +28,7 @@ CoyaSlotsTests >> testCoyaPubSubSlotDoesAcceptOnlySymbols [
 			  selector: #selector) isKindOf: CoyaPubSubSlot)
 ]
 
-{ #category : #tests }
+{ #category : #'configuration test' }
 CoyaSlotsTests >> testCoyaPubSubSlotDoesNotAcceptObjectsButOnlySymbols [
 
 	self
@@ -42,7 +57,18 @@ CoyaSlotsTests >> testCoyaPubSubSlotDoesNotAcceptObjectsButOnlySymbols [
 
 ]
 
-{ #category : #tests }
+{ #category : #'read real info' }
+CoyaSlotsTests >> testCoyaPubSubSlotReadTupleReturnsPublisherAndValue [
+
+	| slot tupleAttached |
+	slot := (CoyaPubSubSlot named: #name) topic: #topic.
+	slot installingIn: self class.
+	tupleAttached := slot readTuple: self.
+	self assert: (tupleAttached second isKindOf: CoyaSyncSubscription).
+	self assert: (tupleAttached first isKindOf: CoyaPublication)
+]
+
+{ #category : #'configuration test' }
 CoyaSlotsTests >> testCoyaPublishSlotDoesAcceptOnlySymbols [
 
 	self assert:
@@ -50,7 +76,7 @@ CoyaSlotsTests >> testCoyaPublishSlotDoesAcceptOnlySymbols [
 			 CoyaPublishSlot)
 ]
 
-{ #category : #tests }
+{ #category : #'configuration test' }
 CoyaSlotsTests >> testCoyaPublishSlotDoesNotAcceptObjectsButOnlySymbols [
 
 	self
@@ -59,7 +85,29 @@ CoyaSlotsTests >> testCoyaPublishSlotDoesNotAcceptObjectsButOnlySymbols [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'read real info' }
+CoyaSlotsTests >> testCoyaPublishSlotReadTupleReturnsPublisherAndValue [
+
+	| slot tupleAttached |
+	slot := (CoyaPublishSlot named: #name) topic: #topic.
+	slot installingIn: self class .
+	tupleAttached := slot readTuple: self.
+	self assert: tupleAttached second isNil.
+	self assert: (tupleAttached first isKindOf: CoyaPublication)
+]
+
+{ #category : #'read real info' }
+CoyaSlotsTests >> testCoyaPublishSlotStoresOnlyOnePublication [
+
+	| slot tupleAttached |
+	slot := (CoyaPublishSlot named: #name) topic: #topic.
+	slot installingIn: self class .
+	self assert: _propertyBaseSlot size equals: 0.
+	tupleAttached := slot readTuple: self.
+	self assert: _propertyBaseSlot size equals: 1
+]
+
+{ #category : #'configuration test' }
 CoyaSlotsTests >> testCoyaSubscribeSlotDoesAcceptOnlySymbols [
 
 	self assert: (((CoyaSubscribeSlot named: #name)
@@ -68,7 +116,7 @@ CoyaSlotsTests >> testCoyaSubscribeSlotDoesAcceptOnlySymbols [
 			  selector: #selector) isKindOf: CoyaSubscribeSlot)
 ]
 
-{ #category : #tests }
+{ #category : #'configuration test' }
 CoyaSlotsTests >> testCoyaSubscribeSlotDoesNotAcceptObjectsButOnlySymbols [
 
 	self
@@ -95,4 +143,59 @@ CoyaSlotsTests >> testCoyaSubscribeSlotDoesNotAcceptObjectsButOnlySymbols [
 
 
 
+]
+
+{ #category : #'read real info' }
+CoyaSlotsTests >> testCoyaSubscribeSlottReadTupleReturnsPublisherAndValue [
+
+	| slot sub |
+	slot := (CoyaSubscribeSlot named: #name) topic: #topic.
+	slot installingIn: self class.
+	sub := slot readSubscription: self.
+	self assert: (sub isKindOf: CoyaSyncSubscription)
+]
+
+{ #category : #'read real info' }
+CoyaSlotsTests >> testTwoCoyaPubSubSlotStoresTwoPublications [
+
+	| slot slot2 tupleAttached |
+	slot := (CoyaPubSubSlot named: #name) topic: #topic.
+	slot2 := (CoyaPubSubSlot named: #name2) topic: #otherTopic.
+	slot installingIn: self class.
+	slot2 installingIn: self class.
+	self assert: _propertyBaseSlot size equals: 0.
+	tupleAttached := slot readTuple: self.
+	self assert: _propertyBaseSlot size equals: 1.
+	self deny: tupleAttached equals: (slot2 readTuple: self).
+	self assert: _propertyBaseSlot size equals: 2
+]
+
+{ #category : #'read real info' }
+CoyaSlotsTests >> testTwoCoyaPublishSlotStoresTwoPublications [
+
+	| slot slot2 tupleAttached |
+	slot := (CoyaPublishSlot named: #name) topic: #topic.
+	slot2 := (CoyaPublishSlot named: #name2) topic: #otherTopic.
+	slot installingIn: self class.
+	slot2 installingIn: self class.
+	self assert: _propertyBaseSlot size equals: 0.
+	tupleAttached := slot readTuple: self.
+	self assert: _propertyBaseSlot size equals: 1.
+	self deny: tupleAttached equals: (slot2 readTuple: self).
+	self assert: _propertyBaseSlot size equals: 2
+]
+
+{ #category : #'read real info' }
+CoyaSlotsTests >> testTwoCoyaSubscribeSlotStoresTwoSubscriptions [
+
+	| slot slot2 tupleAttached |
+	slot := (CoyaSubscribeSlot named: #name) topic: #topic.
+	slot2 := (CoyaSubscribeSlot named: #name2) topic: #otherTopic.
+	slot installingIn: self class.
+	slot2 installingIn: self class.
+	self assert: _propertyBaseSlot size equals: 0.
+	tupleAttached := slot readSubscription: self.
+	self assert: _propertyBaseSlot size equals: 1.
+	self deny: tupleAttached equals: (slot2 readSubscription: self).
+	self assert: _propertyBaseSlot size equals: 2
 ]
