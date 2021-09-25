@@ -17,6 +17,11 @@ Class {
 }
 
 { #category : #'meta-object-protocol' }
+CoyaSubscribeSlot >> isSubscribingSlot [
+	 ^ true 
+]
+
+{ #category : #'meta-object-protocol' }
 CoyaSubscribeSlot >> printOn: aStream [
 
 	aStream

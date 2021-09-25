@@ -37,6 +37,29 @@ CoyaSlot >> emitValue: aMethodBuilder [
 ]
 
 { #category : #writing }
+CoyaSlot >> installingIn: aClass [
+
+	super installingIn: aClass.
+
+	(aClass allSlots anySatisfy: [ :slot | 
+		 (slot isKindOf: CoyaSlot) and: [ 
+			 topic = slot topic and: [ self sharesRoleWith: slot ] ] ]) 
+		ifTrue: [ 
+			DuplicatedSlotTopicAndKind signal:
+				'There is already other slot with the same role and topic ' ]
+]
+
+{ #category : #writing }
+CoyaSlot >> isPublishingSlot [
+	^ false 
+]
+
+{ #category : #writing }
+CoyaSlot >> isSubscribingSlot [
+	^ false 
+]
+
+{ #category : #writing }
 CoyaSlot >> printOn: aStream [
 
 	aStream
@@ -47,6 +70,18 @@ CoyaSlot >> printOn: aStream [
 	aStream
 		nextPutAll: ' topic: #';
 		nextPutAll: (topic ifNil: [ #nil ] ifNotNil: [ :t | t asSymbol ])
+]
+
+{ #category : #writing }
+CoyaSlot >> sharesRoleWith: anOtherSlot [
+
+	^ (self isPublishingSlot and: [ anOtherSlot isPublishingSlot ]) or: [ 
+		  self isSubscribingSlot and: [ anOtherSlot isSubscribingSlot ] ]
+]
+
+{ #category : #accessing }
+CoyaSlot >> topic [
+	^ topic
 ]
 
 { #category : #writing }

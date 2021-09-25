@@ -17,6 +17,16 @@ Class {
 }
 
 { #category : #writing }
+CoyaPubSubSlot >> isPublishingSlot [
+	 ^ true 
+]
+
+{ #category : #writing }
+CoyaPubSubSlot >> isSubscribingSlot [
+	 ^ true 
+]
+
+{ #category : #writing }
 CoyaPubSubSlot >> printOn: aStream [
 
 	aStream

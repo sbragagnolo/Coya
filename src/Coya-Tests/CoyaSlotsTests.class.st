@@ -156,6 +156,83 @@ CoyaSlotsTests >> testCoyaSubscribeSlottReadTupleReturnsPublisherAndValue [
 ]
 
 { #category : #'read real info' }
+CoyaSlotsTests >> testInstallASecondCoyaPubSubSlotSlotOfSameRoleSameTopicProducesError [
+
+	| slot  |
+	slot := (CoyaPubSubSlot named: #name) topic: #pubSub.
+	
+	self
+		should: [ slot installingIn: CoyaSlotsDummy. ]
+		raise: DuplicatedSlotTopicAndKind
+]
+
+{ #category : #'configuration collision test' }
+CoyaSlotsTests >> testInstallASecondCoyaPubSubSlot_CoyaPublishSlotSlotOfSameRoleSameTopicProducesError [
+
+	| slot  |
+	slot := (CoyaPubSubSlot named: #name) topic: #pub.
+	
+	self
+		should: [ slot installingIn: CoyaSlotsDummy. ]
+		raise: DuplicatedSlotTopicAndKind
+]
+
+{ #category : #'configuration collision test' }
+CoyaSlotsTests >> testInstallASecondCoyaPublishSlot_CoyaPubSubSlotSlotOfSameRoleSameTopicProducesError [
+
+	| slot  |
+	slot := (CoyaPublishSlot named: #name) topic: #pubSub.
+	
+	self
+		should: [ slot installingIn: CoyaSlotsDummy. ]
+		raise: DuplicatedSlotTopicAndKind
+]
+
+{ #category : #'configuration collision test' }
+CoyaSlotsTests >> testInstallASecondCoyaPublishSlot_CoyaPublishSlotSlotOfSameRoleSameTopicProducesError [
+
+	| slot  |
+	slot := (CoyaPublishSlot named: #name) topic: #pub.
+	
+	self
+		should: [ slot installingIn: CoyaSlotsDummy. ]
+		raise: DuplicatedSlotTopicAndKind
+]
+
+{ #category : #'configuration collision test' }
+CoyaSlotsTests >> testInstallASecondCoyaSubscribeSlot_CoyaPubSubSlotSlotOfSameRoleSameTopicProducesError [
+
+	| slot |
+	slot := (CoyaPubSubSlot named: #name) topic: #sub.
+
+	self
+		should: [ slot installingIn: CoyaSlotsDummy ]
+		raise: DuplicatedSlotTopicAndKind
+]
+
+{ #category : #'configuration collision test' }
+CoyaSlotsTests >> testInstallASecondCoyaSubscribeSlot_CoyaSubscribeSlotSlotOfSameRoleSameTopicProducesError [
+
+	| slot |
+	slot := (CoyaSubscribeSlot named: #name) topic: #sub.
+
+	self
+		should: [ slot installingIn: CoyaSlotsDummy ]
+		raise: DuplicatedSlotTopicAndKind
+]
+
+{ #category : #'read real info' }
+CoyaSlotsTests >> testInstallASecondSlotOfSameRoleSameTopicProducesError [
+
+	| slot  |
+	slot := (CoyaPubSubSlot named: #name) topic: #pub.
+	
+	self
+		should: [ slot installingIn: CoyaSlotsDummy. ]
+		raise: DuplicatedSlotTopicAndKind
+]
+
+{ #category : #'read real info' }
 CoyaSlotsTests >> testTwoCoyaPubSubSlotStoresTwoPublications [
 
 	| slot slot2 tupleAttached |

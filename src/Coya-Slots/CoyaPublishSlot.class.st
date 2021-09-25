@@ -17,6 +17,12 @@ CoyaPublishSlot >> initialize [
 ]
 
 { #category : #writing }
+CoyaPublishSlot >> isPublishingSlot [
+
+	^ true
+]
+
+{ #category : #writing }
 CoyaPublishSlot >> read: instance [
 	^ (self readTuple: instance ) second
 ]
